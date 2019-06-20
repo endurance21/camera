@@ -3,6 +3,8 @@ class Grid {
       this.row = row ;
       this.column = column ;
       this.cellWidth = cellWidth ;
+      this.width = this.cellWidth*this.column;
+      this.height = this.cellWidth*this.row;
       this.cell = [];
       for (let i = 0; i < this.row ; i++) {
         this.cell[i] = [];
@@ -24,22 +26,25 @@ class Grid {
   //changed the drwaGrid function for camera implementation
     drawGrid2(camera,ctx){
       let map = this;
-      let x = 0 ,y = 0;
-      let startCol = Math.floor(camera.position.x / map.cellWidth);
-      let endCol = startCol + (camera.width / map.cellWidth);
-      let startRow = Math.floor(camera.position.y / map.cellWidth);
-      let endRow = startRow + (camera.height / map.cellWidth);
+      let x = camera.position.x ,y = camera.position.y;
+      let startCol = Math.floor(camera.viewport.x / map.cellWidth);
+      let endCol = startCol + Math.floor((camera.width / map.cellWidth));
+      let startRow = Math.floor(camera.viewport .y / map.cellWidth);
+      let endRow = startRow + Math.floor((camera.height / map.cellWidth));
       ctx.clearRect(0,0,canvas.width,canvas.height);
       for (let i = startRow; i < endRow; i++) {
+        console.log(endCol)
+
         for (let j = startCol; j < endCol; j++){
-          this.cell[i][j].x = x + this.cellWidth/2;
-          this.cell[i][j].y = y + this.cellWidth/2;
+          this.cell[i][j].position.x = x ;
+          this.cell[i][j].position.y = y ;
           this.cell[i][j].colorBox(ctx);
           x = x + this.cellWidth;
         }
-      }
-      x = 0;
+      x = camera.position.x;
       y = y + this.cellWidth;
+
+      }
     }
   
   }
